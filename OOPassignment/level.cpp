@@ -278,7 +278,7 @@ void Level::onKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (press >= 'A' && press <= 'Z' && !nameEntered)
 	{
-		if(score.name.length() < 8)
+		if(score.name.length() < 7)
 			score.name += press;
 		onDraw();
 	}
