@@ -13,6 +13,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	srand(time(NULL));
 	bool gameEnded;
+	//game loop, opens a window, lets game be played, if player chooses to restart, reopens window, if not closes and ends.
 	do
 	{
 	Level *window = new Level();

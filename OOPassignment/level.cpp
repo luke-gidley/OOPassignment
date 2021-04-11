@@ -25,7 +25,7 @@ Level::Level() : levelStarted(false), nameEntered(false), scoreboardSelected(fal
 	scoreboard = new Scoreboard();
 }
 
-
+//memory cleanup for anything that hasn't already been deleted during the course of the game.
 Level::~Level() 
 {
 	for (int i = 0; i < blocks->size(); i++)
@@ -54,19 +54,21 @@ void Level::onDraw()
 
 		bool spawnPowerUp = false;
 		
-
+		//for each loops each drawing a blocks.
 		for_each(blocks->begin(), blocks->end(), [this](Block* block) {block->drawBlock(this); });
 
+		//for each loop checking for collision.
 		for_each(SharedData::getSharedData()->getPowerUps()->begin(), SharedData::getSharedData()->getPowerUps()->end(), [this](PowerUp* powerUp) {powerUp->collision(paddle); });
 
+		//for each loop drawing powerups
 		for_each(SharedData::getSharedData()->getPowerUps()->begin(), SharedData::getSharedData()->getPowerUps()->end(), [this](PowerUp* powerUp) {powerUp->drawPowerUp(this); });
 
-
+		//collision and drawing for ball and paddle.
 		ball->collision(blocks, paddle);
 		ball->drawBall(this);
 		paddle->drawPaddle(this);
 
-		//drawing powerup key
+		//drawing powerup key.
 		setBackColour(RED);
 		setFont(15, L"Arial");
 		drawCircle(50, 450, 5, true);
@@ -79,11 +81,13 @@ void Level::onDraw()
 		drawText(" - Juggernaut Powerup", 60, 495);
 	}
 
+	//if someone breaks every block game ends.
 	if (blocks->size() == 0 && !SharedData::getSharedData()->getGameOver())
 	{
 		SharedData::getSharedData()->changeGameOver();
 	}
 
+	//sets up the next screen once the game has ended, things like time taken etc then puts them into the score struct.
 	if (SharedData::getSharedData()->getGameOver())
 	{
 		if (!stopTime) {
@@ -101,7 +105,7 @@ void Level::onDraw()
 	EasyGraphics::onDraw();
 }
 
-
+//creates the blocks inside the level.
 vector<Block*>* Level::createLevel()
 {
 	int x = 2;
@@ -109,7 +113,7 @@ vector<Block*>* Level::createLevel()
 	
 	vector<Block*>* levelBlocks = new vector<Block*>;
 
-
+	//for loops creating each collumn and row of blocks.
 	for (int i = 0; i < BLOCK_AMOUNT_COLUMN; i++)
 	{
 		for (int j = 0; j < BLOCK_AMOUNT_ROW; j++)
@@ -132,7 +136,7 @@ vector<Block*>* Level::createLevel()
 	return levelBlocks;
 }
 
-
+//moves paddle, with powerups like double time it would be unfair to force it to be key presses as the ball is pretty quick during double time.
 void Level::onMouseMove(UINT nFlags, int x, int y)
 {
 	if (x > 0 + paddle->getWidth()/2 && x < SCREEN_WIDTH - paddle->getWidth() / 2) {
@@ -153,6 +157,7 @@ Ball* Level::createBall()
 	return ball;
 }
 
+//starts game, checks for button clicks
 void Level::onLButtonDown(UINT nFlags, int x, int y)
 {
 	if (!levelStarted)
