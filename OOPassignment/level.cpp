@@ -68,14 +68,15 @@ void Level::onDraw()
 
 		//drawing powerup key
 		setBackColour(RED);
+		setFont(15, L"Arial");
 		drawCircle(50, 450, 5, true);
-		drawText(" - Bigger Paddle Powerup", 450, 60);
+		drawText(" - Bigger Paddle Powerup", 60, 435);
 		setBackColour(GREEN);
-		drawCircle(50, 470, 5, true);
-		drawText(" - Bigger Paddle Powerup", 450, 60);
+		drawCircle(50, 480, 5, true);
+		drawText(" - Double Speed Powerup", 60, 465);
 		setBackColour(BLUE);
-		drawCircle(50, 490, 5, true);
-		drawText(" - Bigger Paddle Powerup", 450, 60);
+		drawCircle(50, 510, 5, true);
+		drawText(" - Juggernaut Powerup", 60, 495);
 	}
 
 	if (blocks->size() == 0 && !SharedData::getSharedData()->getGameOver())
