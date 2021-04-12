@@ -4,6 +4,7 @@
 #include "Paddle.h"
 #include "Ball.h"
 #include "Scoreboard.h"
+#include "ScoreboardData.h"
 
 class Level : public EasyGraphics
 {
@@ -23,7 +24,7 @@ public:
 	int calcTime(int& seconds);
 	virtual void onKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);  
 	virtual void onCreate();                                       
-	void restart();
+
 
 private:
 	vector<Block*>* blocks;
@@ -33,9 +34,10 @@ private:
 	time_t start;
 	bool stopTime;
 	int timeTaken;
+	ScoreboardData* score;
 	Scoreboard* scoreboard;
-	SCORE score;
 	bool nameEntered;
 	bool scoreboardSelected;
+	string name;
 };
 

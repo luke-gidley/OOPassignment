@@ -92,9 +92,7 @@ void Level::onDraw()
 	{
 		if (!stopTime) {
 			timeTaken = difftime(time(0), start);
-			score.score = SharedData::getSharedData()->getScore();
-			score.time.mins = calcTime(timeTaken);
-			score.time.seconds = timeTaken;
+			score = new ScoreboardData("", SharedData::getSharedData()->getScore(), calcTime(timeTaken), timeTaken);
 		}
 		stopTime = true;
 		showGameOver();
@@ -153,7 +151,7 @@ Paddle* Level::createPaddle()
 
 Ball* Level::createBall()
 {
-	Ball* ball = new Ball(400, 375, 10, 45, 5);
+	Ball* ball = new Ball(400, 375, 10, (rand() % 135) + 45, 5);
 	return ball;
 }
 
@@ -173,14 +171,14 @@ void Level::onLButtonDown(UINT nFlags, int x, int y)
 		if ((x >= 25 && x <= 225) && (y >= 300 && y <= 360))
 		{
 			scoreboardSelected = true;
-			SharedData::getSharedData()->changeScoreboardType(SCOREBOARD_SCORE_SORT);
-			scoreboard->sortScores();
+			scoreboard->setSortType(1);
+			scoreboard->sortScoreboard();
 		}
 		else if ((x >= 325 && x <= 525) && (y >= 300 && y <= 360))
 		{
 			scoreboardSelected = true;
-			SharedData::getSharedData()->changeScoreboardType(SCOREBOARD_TIME_SORT);
-			scoreboard->sortScores();
+			scoreboard->setSortType(2);
+			scoreboard->sortScoreboard();
 		}
 		onDraw();
 	}
@@ -199,9 +197,10 @@ void Level::onTimer(UINT nIDEvent)
 {
 	if (nIDEvent == REDRAW_TIMER_ID) {
 		ball->moveBall();
-
+		//moves the powerups.
 		for_each(SharedData::getSharedData()->getPowerUps()->begin(), SharedData::getSharedData()->getPowerUps()->end(), [](PowerUp* powerUp) {powerUp->movePowerUp(); });
 
+		//if statements that handle the timers on active powerups. When a powerup is picked up and one is already active the time is reset.
 		if (SharedData::getSharedData()->getBigPaddleActive())
 		{
 			SharedData::getSharedData()->changeBigPaddleTimer(-1);
@@ -233,20 +232,20 @@ void Level::onTimer(UINT nIDEvent)
 	onDraw();
 }
 
-
+//shows the gameover screen to allow the player to enter name and choose a scoreboard to look at.
 void Level::showGameOver()
 {
 	killTimer(REDRAW_TIMER_ID);
 	clearScreen(BLACK);
 	setFont(20, L"Arial");
-	string scoreString = "Your scored " + to_string(score.score) + " points!";
-	string timeString = "Your time is: " + to_string(score.time.mins) + " mins and " + to_string(score.time.seconds) + " seconds";
+	string scoreString = "Your scored " + to_string(score->getPoints()) + " points!";
+	string timeString = "Your time is: " + to_string(score->getMins()) + " mins and " + to_string(score->getSecs()) + " seconds";
 	drawText(scoreString.c_str(), 25, 50);
 	drawText(timeString.c_str(), 25, 100);
 	if (!nameEntered)
 	{
-		string name = "Write name here: " + score.name;
-		drawText(name.c_str(), 25, 150);
+		string enterName = "Write name here: " + name;
+		drawText(enterName.c_str(), 25, 150);
 	}
 	else if (nameEntered)
 	{
@@ -264,7 +263,7 @@ void Level::showGameOver()
 		drawText("scoreboard by time!", 330, 330);
 	}
 }
-
+//calculates time taken, returns mins and edits seconds to reflect the mins being taken off.
 int Level::calcTime(int& seconds)
 {
 	int mins = seconds / 60;
@@ -275,28 +274,29 @@ int Level::calcTime(int& seconds)
 void Level::onKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	char press = nChar;
-
+	//lets user enter their name
 	if (press >= 'A' && press <= 'Z' && !nameEntered)
 	{
-		if(score.name.length() < 7)
-			score.name += press;
+		if(name.length() < 7)
+			name += press;
 		onDraw();
-	}
+	}//lets them delete characters from their name
 	if (press == VK_BACK && !nameEntered)
 	{
-		if (score.name.length() > 0)
-			score.name.erase(score.name.size() - 1, 1);
+		if (name.length() > 0)
+			name.erase(name.size() - 1, 1);
 		onDraw();
-	}
+	}//moves onto the next screen, adds their data to the scoreboard before it gets sorted.
 	if (press == VK_RETURN && SharedData::getSharedData()->getGameOver() && !nameEntered)
 	{
 		nameEntered = true;
-		scoreboard->addScore(score);
+		score->setName(name);
+		scoreboard->addScoreboardData(score);
 	}
 	onDraw();
 }
 
-
+//puts Breakout Game in the bar, looks nice
 void Level::onCreate() {
 
 	EasyGraphics::onCreate();

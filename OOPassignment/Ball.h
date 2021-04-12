@@ -10,13 +10,6 @@
 struct DIRECTION
 {
 	double dx, dy;
-
-	DIRECTION operator=(DIRECTION const& rhs)
-	{
-		this->dx = rhs.dx;
-		this->dy = rhs.dy;
-		return *this;
-	}
 };
 
 
@@ -48,7 +41,7 @@ private:
 
 };
 
-
+//moves the ball depending on direction and if double speed is active.
 inline void Ball::moveBall()
 {
 	if (SharedData::getSharedData()->getDoubleSpeedActive()) {
@@ -61,6 +54,7 @@ inline void Ball::moveBall()
 	}
 }
 
+//calculates radians.
 inline double Ball::calcRadians(double degrees)
 {
 	const double CONVERSION = 6.283185307179586 / 360;

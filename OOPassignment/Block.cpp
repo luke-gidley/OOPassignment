@@ -18,6 +18,7 @@ Block::Block(int x, int y, int width, int height, int colour, int health, bool c
 	botRC.x = x + width;
 	botRC.y = y + height;
 
+	//sets the powerup to be a null pointer until it is created.
 	powerUp = nullptr;
 
 
@@ -28,12 +29,9 @@ Block::~Block()
 	
 }
 
-
+//When a block is hit it creates a powerup if it contains one.
 bool Block::takeDamage()
 {
-	if (health == 1)
-	{
-		this->health -= 1;
 		if (containsPowerup)
 		{
 			int randomPowerUp = rand() % NUM_OF_POWERUPS + 1;
@@ -48,6 +46,7 @@ bool Block::takeDamage()
 				break;
 			case 3: 
 				powerUp = new DoubleSpeed(x + width / 2, y + height / 2, 7);
+				break;
 			default:
 				break;
 			}
@@ -55,9 +54,7 @@ bool Block::takeDamage()
 			SharedData::getSharedData()->addPowerUp(powerUp);
 		}
 		return true;
-	}
-	this->health -= 1;
-	this->colour = colours[health];
+
 	return false;
 
 

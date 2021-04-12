@@ -17,11 +17,11 @@ Juggernaut::~Juggernaut()
 {
 
 }
-
+//sets the timer for juggernaut
 void Juggernaut::useJuggernaut()
 {
 	if(!SharedData::getSharedData()->getJuggernautActive())
 		SharedData::getSharedData()->changeJuggernautActive();
 
-	SharedData::getSharedData()->changeJuggernautTimer(300 - SharedData::getSharedData()->getJuggernautTimer());
+	SharedData::getSharedData()->changeJuggernautTimer(JUGGERNAUT_TIME - SharedData::getSharedData()->getJuggernautTimer());
 }

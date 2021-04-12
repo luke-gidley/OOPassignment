@@ -149,8 +149,11 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="PowerUp.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="Scoreboard.h" />
+    <ClInclude Include="ScoreboardData.h" />
     <ClInclude Include="SharedData.h" />
+    <ClInclude Include="Time.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />

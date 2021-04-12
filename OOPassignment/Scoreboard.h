@@ -4,76 +4,11 @@
 #include <vector>
 #include <Windows.h>
 #include "SharedData.h"
+#include "Score.h"
+#include "Time.h"
+#include "ScoreboardData.h"
 
 using namespace std;
-
-struct TIME
-{
-	int mins;
-	int seconds;
-	bool operator>(const TIME rhs)
-	{
-		if (this->mins == rhs.mins)
-		{
-			return (this->seconds > rhs.seconds);
-		}
-		else
-		{
-			return (this->mins > rhs.mins);
-		}
-	}
-
-	bool operator<(const TIME rhs)
-	{
-		if (this->mins == rhs.mins)
-		{
-			return (this->seconds < rhs.seconds);
-		}
-		else
-		{
-			return (this->mins < rhs.mins);
-		}
-	}
-
-};
-
-struct SCORE
-{
-	string name;
-	int score;
-	TIME time;
-
-	bool operator>(const SCORE rhs) 
-	{
-		switch (SharedData::getSharedData()->getScoreboardSortType())
-		{
-		case 1:
-			return (this->score > rhs.score);
-			break;
-		case 2: 
-			return (this->time > rhs.time);
-			break;
-		default:
-			break;
-		}
-		return false;
-	}
-	bool operator<(const SCORE rhs)
-	{
-		switch (SharedData::getSharedData()->getScoreboardSortType())
-		{
-		case 1:
-			return (this->score < rhs.score);
-			break;
-		case 2:
-			return (this->time < rhs.time);
-			break;
-		default:
-			break;
-		}
-		return false;
-	}
-};
 
 
 
@@ -86,18 +21,27 @@ public:
 
 	void loadScores();
 	void displayScoreboard(EasyGraphics* canvas);
-	void sortScores();
-	void addScore(SCORE score);
+	void sortScoreboard();
 	void storeScores();
+	void addScoreboardData(ScoreboardData* data);
+	void setSortType(int type);
 
+	//template insertion sort to allow for multiple types of object sorting.
 	template <typename T>
-	void insertionSort(vector<T>& a, int n);
+	void insertionSort(vector<T*>* &toSort, int n);
 
 private:
 
-	vector<SCORE> scores;
+	vector<Score*>* scores;
+	vector<Time*>* times;
+	vector<ScoreboardData*>* scoreboardData;
 	const int MAX_STORED_SCORES = 10;
+	int sortType;
 
 
 };
 
+inline void Scoreboard::setSortType(int type)
+{
+	sortType = type;
+}

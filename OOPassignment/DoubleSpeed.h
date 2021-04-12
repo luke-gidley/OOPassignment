@@ -16,6 +16,7 @@ public:
 private:
 
 	int x, y, score;
+	const int DOUBLE_TIME = 400;
 
 
 };

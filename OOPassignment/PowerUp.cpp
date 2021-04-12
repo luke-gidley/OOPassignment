@@ -21,7 +21,7 @@ PowerUp::~PowerUp()
 //collision with paddle
 bool PowerUp::collision(Paddle* paddle)
 {
-		if (this != nullptr) {
+
 			if (getY() >= paddle->getY() && getY() <= paddle->getY() + paddle->getHeight() && (getX() > paddle->getX() && getX() < paddle->getX() + paddle->getWidth()))
 			{
 				//depending on which type of powerup was falling one is executed. It doesn't know which one it is until this point as they are randomly generated at runtime.
@@ -39,25 +39,14 @@ bool PowerUp::collision(Paddle* paddle)
 				}
 
 
-				deletePowerUp();
+				SharedData::getSharedData()->deletePowerUp(this);
 			}
 			else if (getY() > 600)
 			{
-				deletePowerUp();
+				SharedData::getSharedData()->deletePowerUp(this);
 			}
 
-		}
+
 	return true;
 }           
 
-//finds and deletes the powerUp that was just hit by the paddle or fell off the screen.
-void PowerUp::deletePowerUp()
-{
-	vector<PowerUp*>::iterator itr = find(SharedData::getSharedData()->getPowerUps()->begin(), SharedData::getSharedData()->getPowerUps()->end(), this);
-	if (itr != SharedData::getSharedData()->getPowerUps()->cend())
-	{
-		auto location = distance(SharedData::getSharedData()->getPowerUps()->begin(), itr);
-		SharedData::getSharedData()->getPowerUps()->erase(SharedData::getSharedData()->getPowerUps()->begin() + distance(SharedData::getSharedData()->getPowerUps()->begin(), itr));
-		delete this;
-	}
-}

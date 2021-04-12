@@ -18,6 +18,7 @@ private:
 
 	int x, y;
 	int score;
+	const int BIG_PADDLE_MAX_TIME = 600;
 
 };
 inline void BigPaddle::movePowerUp() {

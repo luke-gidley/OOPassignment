@@ -3,7 +3,7 @@
 #include "Paddle.h"
 
 
-
+//base abstract class to allow for other powerups to work.
 class PowerUp
 {
 public:
@@ -16,7 +16,6 @@ public:
 	virtual void movePowerUp()=0;
 	virtual int& getY()=0;
 	virtual int& getX()=0;
-	void deletePowerUp();
 
 protected:
 	

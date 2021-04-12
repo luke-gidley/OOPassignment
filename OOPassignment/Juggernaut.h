@@ -17,6 +17,7 @@ public:
 private:
 	int x, y;
 	int score;
+	const int JUGGERNAUT_TIME = 300;
 };
 
 inline void Juggernaut::movePowerUp()

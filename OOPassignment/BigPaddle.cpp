@@ -9,7 +9,7 @@ BigPaddle::~BigPaddle()
 {
 
 }
-
+//sets the big paddle timer and changes the width
 void BigPaddle::useBigPaddle(Paddle* paddle)
 {
 	if (!SharedData::getSharedData()->getBigPaddleActive())
@@ -18,7 +18,7 @@ void BigPaddle::useBigPaddle(Paddle* paddle)
 		SharedData::getSharedData()->changeBigPaddleActive();
 	}
 	
-	SharedData::getSharedData()->changeBigPaddleTimer(600 - SharedData::getSharedData()->getBigPaddleTimer());
+	SharedData::getSharedData()->changeBigPaddleTimer(BIG_PADDLE_MAX_TIME - SharedData::getSharedData()->getBigPaddleTimer());
 }
 
 void BigPaddle::drawPowerUp(EasyGraphics* window) 

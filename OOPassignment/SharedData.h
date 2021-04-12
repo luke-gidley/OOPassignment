@@ -34,11 +34,10 @@ public:
 	int getScore();
 	void changeScore(int change);
 	
-	int getScoreboardSortType();
-	void changeScoreboardType(int change);
-
 	bool getGameEnded();
 	void setGameEnded(bool value);
+
+	void deletePowerUp(PowerUp* powerup);
 private:
 
 	vector<PowerUp*>* activePowerUps;
@@ -55,7 +54,6 @@ private:
 	int doubleSpeedTimer;
 
 	int currentScore;
-	int scoreboardType;
 
 	bool gameEnded;
 };
@@ -119,10 +117,6 @@ inline void SharedData::changeDoubleSpeedTimer(int change) { doubleSpeedTimer +=
 inline int SharedData::getScore() { return currentScore;  }
 
 inline void SharedData::changeScore(int change) { currentScore += change; }
-
-inline int SharedData::getScoreboardSortType() { return scoreboardType; }
-
-inline void SharedData::changeScoreboardType(int change) { scoreboardType = change; }
 
 inline bool SharedData::getGameEnded() { return gameEnded; }
 

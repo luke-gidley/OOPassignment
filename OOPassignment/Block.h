@@ -9,7 +9,7 @@
 
 using namespace std;
 
-
+//more readable.
 struct CORNER
 {
 	int x, y;

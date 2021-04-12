@@ -1,5 +1,7 @@
 #pragma once
 #include "EasyGraphics.h"
+
+//paddle class to control paddle.
 class Paddle
 {
 public:

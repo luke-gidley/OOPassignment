@@ -11,7 +11,7 @@ Ball::~Ball()
 {
 
 }
-
+//starts the movement and calculates the angle of a bounce.
 DIRECTION Ball::startMovement(double ballAngle)
 {
 	DIRECTION direction;
@@ -23,23 +23,24 @@ DIRECTION Ball::startMovement(double ballAngle)
 
 }
 
-
+//collision checks
 void Ball::collision(vector<Block*>* blocks, Paddle* paddle)
 {
+	//left and right wall
 	if (x <= 0 + radius || x >= 800 - radius * 2)
 	{
 		direction.dx = -direction.dx;
 	}
-
+	//top
 	if (y - radius <= 0)
 		direction.dy = -direction.dy;
-
+	//blocks
 	for (int i = 0; i < blocks->size(); i++)
 	{	
 		if ((
 			(x + radius > blocks->at(i)->getBotLC().x && x - radius < blocks->at(i)->getBotRC().x)) &&
 			y < blocks->at(i)->getBotLC().y && y > blocks->at(i)->getTopLC().y) {
-
+			//ignores changing direction if the juggernaut is active.
 			if(!SharedData::getSharedData()->getJuggernautActive())
 				direction.dx = -direction.dx;
 
@@ -59,7 +60,7 @@ void Ball::collision(vector<Block*>* blocks, Paddle* paddle)
 
 		
 	}
-
+	//paddle
 	if (y >= paddle->getY() - radius && y <= paddle->getY() + paddle->getHeight() && (x > paddle->getX() && x < paddle->getX() + paddle->getWidth()))
 	{
 		int diff = 0;
@@ -83,8 +84,8 @@ void Ball::collision(vector<Block*>* blocks, Paddle* paddle)
 			direction = startMovement(90 + diff);
 		}
 	}
-
-	if (y > paddle->getY() + paddle->getHeight() + radius)
+	//if the ball goes below the paddle the game ends.
+	if (y > paddle->getY() + paddle->getHeight())
 	{
 		SharedData::getSharedData()->changeGameOver();
 		
@@ -92,7 +93,7 @@ void Ball::collision(vector<Block*>* blocks, Paddle* paddle)
 
 }
 
-
+//deletes a block from the vector holding it and deletes itself.
 void Ball::destroyBlock(vector<Block*>* blocks, int i)
 {
 	bool broken = blocks->at(i)->takeDamage();
